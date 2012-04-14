@@ -857,9 +857,9 @@ public class SmackableImp implements Smackable {
 				avatarHash = avatarExtension.getAvatarHash();
 				if (!avatarHash.equals(""))
 					avatar = getUpdatedAvatar(entry, avatarHash);
+				values.put(RosterConstants.AVATAR_HASH, avatarHash);
+				debugLog("avatar hash for " + entry.getUser() + ": " + avatarHash);
 			}
-			debugLog("avatar hash for " + entry.getUser() + ": " + avatarHash);
-			values.put(RosterConstants.AVATAR_HASH, avatarHash);
 			if (avatar != null) {
 				debugLog("new avatar for " +  entry.getUser() + " loaded, size=" + avatar.length);
 				values.put(RosterConstants.AVATAR, avatar);
