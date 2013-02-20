@@ -130,8 +130,10 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 		Cursor cursor = getContentResolver().query(RosterProvider.CONTENT_URI,
 				new String[] { RosterConstants.AVATAR_HASH, RosterConstants.AVATAR },
 				RosterConstants.JID + " = '" + mWithJabberID + "'", null, null);
-		cursor.moveToFirst();
-		MainWindow.setAvatarImage(avatar, cursor);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			MainWindow.setAvatarImage(avatar, cursor);
+		}
 		cursor.close();
 
 		setTitle(null);
