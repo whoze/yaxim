@@ -218,7 +218,6 @@ public class XMPPService extends GenericService {
 			}
 			@Override
 			public boolean isRoom(String jid) throws RemoteException {
-				Log.d("MucServiceStub", "called isRoom with jid "+jid);
 				return mSmackable.isRoom(jid);
 			}
 		};
