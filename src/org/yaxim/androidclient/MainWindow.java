@@ -1029,6 +1029,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			cursor.moveToNext();
 		}
 		cursor.close();
+		list.remove("MUCs");
 		return list;
 	}
 

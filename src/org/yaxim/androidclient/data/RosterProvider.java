@@ -315,6 +315,7 @@ public class RosterProvider extends ContentProvider {
 					+ RosterConstants.NICKNAME + " TEXT, "
 					+ RosterConstants.PASSWORD + " TEXT"
 					+ ");");
+			
 		}
 
 		@Override
