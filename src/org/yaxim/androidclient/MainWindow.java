@@ -953,7 +953,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 			String name = getGroupName(count);
 			if (!mGroupsExpanded.containsKey(name))
 				mGroupsExpanded.put(name, prefs.getBoolean("expanded_" + name, true));
-			Log.d(TAG, "restoreGroupsExpanded: " + name + ": " + mGroupsExpanded.get(name));
 			if (mGroupsExpanded.get(name))
 				getExpandableListView().expandGroup(count);
 			else
