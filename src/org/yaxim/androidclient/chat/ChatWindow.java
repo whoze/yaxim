@@ -687,7 +687,7 @@ public class ChatWindow extends SherlockListActivity implements OnKeyListener,
 	}
 
 	final int nick2Color(String nick) {
-		nick = nick.toLowerCase();
+		nick = nick;
 		
 		Checksum nickCRC = new CRC32();
 		nickCRC.update(nick.getBytes(), 0, nick.length());
