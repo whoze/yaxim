@@ -239,6 +239,7 @@ public class SmackableImp implements Smackable {
 
 	// BLOCKING, call on a new Thread!
 	private void updateConnectingThread(Thread new_thread) {
+		Log.d(TAG, "updateConnectingThread: " + new_thread);
 		synchronized(mConnectingThreadMutex) {
 			if (mConnectingThread == null) {
 				mConnectingThread = new_thread;
@@ -250,10 +251,12 @@ public class SmackableImp implements Smackable {
 				Log.d(TAG, "updateConnectingThread: failed to join(): " + e);
 			} finally {
 				mConnectingThread = new_thread;
+				Log.d(TAG, "updateConnectingThread: done " + new_thread);
 			}
 		}
 	}
 	private void finishConnectingThread() {
+		Log.d(TAG, "finishConnectingThread.");
 		synchronized(mConnectingThreadMutex) {
 			mConnectingThread = null;
 		}
@@ -479,6 +482,7 @@ public class SmackableImp implements Smackable {
 	}
 	
 	private void onDisconnected(String reason) {
+		Log.e(TAG, "onDisconnected: " + reason);
 		unregisterPongListener();
 		mLastError = reason;
 		updateConnectionState(ConnectionState.DISCONNECTED);
@@ -489,7 +493,11 @@ public class SmackableImp implements Smackable {
 		// iterate through to the deepest exception
 		while (reason.getCause() != null)
 			reason = reason.getCause();
-		onDisconnected(reason.getLocalizedMessage());
+		//onDisconnected(reason.getLocalizedMessage());
+		// XXX: copy&pasted from onDisconnected(String) for proper logging order
+		unregisterPongListener();
+		mLastError = reason.getLocalizedMessage();
+		updateConnectionState(ConnectionState.DISCONNECTED);
 	}
 
 	private void tryToConnect(boolean create_account) throws YaximXMPPException {
@@ -975,6 +983,7 @@ public class SmackableImp implements Smackable {
 				System.currentTimeMillis() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPingAlarmPendIntent);
 	}
 	private void unregisterPongListener() {
+		Log.d(TAG, "unregisterPongListener.");
 		mAlarmManager.cancel(mPingAlarmPendIntent);
 		mAlarmManager.cancel(mPongTimeoutAlarmPendIntent);
 	}

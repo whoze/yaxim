@@ -55,15 +55,19 @@ public class XmppStreamHandler {
 
 	/** Perform a quick shutdown of the XMPPConnection if a resume is possible */
 	public void quickShutdown() {
+		Log.d(TAG, "quickShutdown: " + isResumePossible());
 		if (isResumePossible()) {
 			mConnection.quickShutdown();
+			Log.d(TAG, "quickShutdown: completed mConnection.quickShutdown");
 			// We will not necessarily get any notification from a quickShutdown, so adjust our state here.
 			closeOnError();
 		} else {
 			// XXX: shutdown() would cause the connectionClosed listener to be called!
 			mConnection.quickShutdown();
+			Log.d(TAG, "quickShutdown: completed mConnection.quickShutdown");
 			close();
 		}
+		Log.d(TAG, "quickShutdown: done");
 	}
 
 	public void setMaxOutgoingQueueSize(int maxOutgoingQueueSize) {
