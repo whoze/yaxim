@@ -548,7 +548,7 @@ public class XMPPService extends GenericService {
 					public void run() {
 						// work around Toast fallback for errors
 						notifyClient(from, mSmackable.getNameForJID(from[0]), error,
-							!mIsBoundTo.contains(from), silent_notification, true, Type.error);
+							!mIsBoundTo.contains(from[0]), silent_notification, true, Type.error);
 					}});
 				}
 
