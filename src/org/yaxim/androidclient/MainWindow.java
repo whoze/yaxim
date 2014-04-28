@@ -588,6 +588,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.commit();
+		// on a manual status update, reset auto-away
+		mConfig.smartAwayMode = null;
 
 		displayOwnStatus();
 
