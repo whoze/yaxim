@@ -3,6 +3,7 @@ package org.yaxim.androidclient.data;
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.exceptions.YaximXMPPAdressMalformedException;
 import org.yaxim.androidclient.util.PreferenceConstants;
+import org.yaxim.androidclient.util.StatusMode;
 import org.yaxim.androidclient.util.XMPPHelper;
 
 import android.content.SharedPreferences;
@@ -52,6 +53,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 	public boolean require_ssl;
 
 	public String statusMode;
+	public StatusMode smartAwayMode;
 	public String statusMessage;
 	public String[] statusMessageHistory;
 
@@ -174,5 +176,12 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 		} else {
 			return R.style.YaximDarkTheme;
 		}
+	}
+
+	public StatusMode getPresenceMode() {
+		StatusMode sm = StatusMode.fromString(statusMode);
+		if (smartAwayMode == null)
+			return sm;
+		return (smartAwayMode.compareTo(sm) < 0) ? smartAwayMode : sm;
 	}
 }
