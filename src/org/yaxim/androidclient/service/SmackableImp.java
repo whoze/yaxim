@@ -1100,7 +1100,8 @@ public class SmackableImp implements Smackable {
 
 					// ignore empty messages
 					if (chatMessage == null) {
-						if (msg.getType() == Message.Type.groupchat && msg.getSubject() != null) {
+						if (msg.getSubject() != null && msg.getType() == Message.Type.groupchat
+								&& multiUserChats.containsKey(fromJID[0])) {
 							// this is a MUC subject, update our DB
 							ContentValues cvR = new ContentValues();
 							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, msg.getSubject());
