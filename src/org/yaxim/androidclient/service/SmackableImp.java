@@ -1369,7 +1369,7 @@ public class SmackableImp implements Smackable {
 			Log.d(TAG, String.format("joining room %s i found %d rows of last date %d with msg %s, setting since to %s", room, cursor.getCount(), lastDate, msg, (new Date(lastDate)).toString()) );
 			history.setSince( new Date(lastDate) );
 		} else Log.d(TAG, "found no old DB messages");
-		
+		cursor.close();
 		
 		try {
 			muc.join(nickname, password, history, SmackConfiguration.getPacketReplyTimeout());
