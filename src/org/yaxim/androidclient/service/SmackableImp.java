@@ -1347,6 +1347,7 @@ public class SmackableImp implements Smackable {
 	public boolean addRoom(String jid, String password, String nickname) {
 		ContentValues cv = new ContentValues();
 		cv.put(RosterProvider.RosterConstants.JID, jid);
+		cv.put(RosterProvider.RosterConstants.ROOMNAME, jid.split("@")[0]);
 		cv.put(RosterProvider.RosterConstants.NICKNAME, nickname);
 		cv.put(RosterProvider.RosterConstants.PASSWORD, password);
 		Uri ret = mContentResolver.insert(RosterProvider.MUCS_URI, cv);
