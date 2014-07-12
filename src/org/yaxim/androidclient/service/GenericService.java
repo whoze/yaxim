@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.jivesoftware.smack.packet.Message;
 import org.yaxim.androidclient.chat.ChatWindow;
+import org.yaxim.androidclient.chat.MUCChatWindow;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.util.LogConstants;
 
@@ -175,6 +176,7 @@ public abstract class GenericService extends Service {
 				System.currentTimeMillis());
 		mNotification.defaults = 0;
 		Uri userNameUri = Uri.parse(fromJid);
+		mNotificationIntent.setClass(this, isMuc ? MUCChatWindow.class : ChatWindow.class);
 		mNotificationIntent.setData(userNameUri);
 		mNotificationIntent.putExtra(ChatWindow.INTENT_EXTRA_USERNAME, fromUserId);
 		mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
