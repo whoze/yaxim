@@ -1461,11 +1461,6 @@ public class SmackableImp implements Smackable {
 	}
 
 	@Override
-	public String[] getRooms() {
-		return (String[]) mucJIDs.toArray(new String[]{});
-	}
-
-	@Override
 	public boolean inviteToRoom(String contactJid, String roomJid) {
 		MultiUserChat muc = multiUserChats.get(roomJid);
 		if(contactJid.contains("/")) {
