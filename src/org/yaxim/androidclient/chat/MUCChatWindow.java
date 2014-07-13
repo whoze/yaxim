@@ -187,6 +187,7 @@ public class MUCChatWindow extends ChatWindow {
 			nick.setText(pp.resource);
 			nick2Color(pp.resource, tv);
 			nick.setTextColor(tv.data);
+			nick.setTypeface(null, android.graphics.Typeface.BOLD);
 			
 			boolean hasStatus = pp.status != null && pp.status.length() > 0;
 			statusmsg.setText(pp.status);
