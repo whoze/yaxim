@@ -1410,7 +1410,7 @@ public class SmackableImp implements Smackable {
 		cursor.close();
 		
 		try {
-			muc.join(nickname, password, history, SmackConfiguration.getPacketReplyTimeout());
+			muc.join(nickname, password, history, 5*PACKET_TIMEOUT);
 		} catch (Exception e) {
 			Log.e(TAG, "Could not join MUC-room "+room);
 			e.printStackTrace();
