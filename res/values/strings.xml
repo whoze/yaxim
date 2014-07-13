@@ -34,6 +34,8 @@
 	<!-- Notifications -->
 	<string name="notification_message">Message from %s</string>
 	<string name="notification_anonymous_message">Message received</string>
+	<!--  Chat Room notification, %1$s is the user name, %2$s is the room, e.g. "{Ge0rG} in {yaxim Chat}" -->
+	<string name="notification_muc_message">%1$s in %2$s</string>
 
 	<!-- Notifications -->
 	<string name="notification_error">Error while sending message!</string>

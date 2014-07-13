@@ -108,7 +108,7 @@ public abstract class GenericService extends Service {
 			silent_notification = false;		
 		}
 
-		setNotification(fromJid, fromUserName, message, is_error, isMuc);
+		setNotification(fromJid, jid[1], fromUserName, message, is_error, isMuc);
 		setLEDNotification(isMuc);
 		mNotification.sound = isMuc? mConfig.notifySoundMuc : mConfig.notifySound;
 		
@@ -143,7 +143,7 @@ public abstract class GenericService extends Service {
 		mWakeLock.release();
 	}
 	
-	private void setNotification(String fromJid, String fromUserId, String message, boolean is_error,
+	private void setNotification(String fromJid, String fromResource, String fromUserId, String message, boolean is_error,
 			boolean isMuc) {
 		
 		int mNotificationCounter = 0;
@@ -158,7 +158,11 @@ public abstract class GenericService extends Service {
 		} else {
 			author = fromUserId;
 		}
-		String title = getString(R.string.notification_message, author);
+		String title;
+		if (isMuc)
+			title = getString(R.string.notification_muc_message, fromResource, author/* = name of chatroom */);
+		else
+			title = getString(R.string.notification_message, author);
 		String ticker;
 		if ((!isMuc && mConfig.ticker) || (isMuc && mConfig.tickerMuc)) {
 			int newline = message.indexOf('\n');
@@ -172,7 +176,7 @@ public abstract class GenericService extends Service {
 				messageSummary = message.substring(0, limit) + " [...]";
 			ticker = title + ":\n" + messageSummary;
 		} else
-			ticker = getString(R.string.notification_anonymous_message, author);
+			ticker = getString(R.string.notification_anonymous_message);
 		mNotification = new Notification(R.drawable.sb_message, ticker,
 				System.currentTimeMillis());
 		mNotification.defaults = 0;
