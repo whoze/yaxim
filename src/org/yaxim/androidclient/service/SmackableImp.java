@@ -839,8 +839,18 @@ public class SmackableImp implements Smackable {
 	}
 	
 	public String getNameForJID(String jid) {
-		if (null != this.mRoster.getEntry(jid) && null != this.mRoster.getEntry(jid).getName() && this.mRoster.getEntry(jid).getName().length() > 0) {
-			return this.mRoster.getEntry(jid).getName();
+		RosterEntry re = mRoster.getEntry(jid);
+		if (null != re && null != re.getName() && re.getName().length() > 0) {
+			return re.getName();
+		} else if (mucJIDs.contains(jid)) {
+			// query the DB as we do not have the room name in memory
+			Cursor c = mContentResolver.query(RosterProvider.CONTENT_URI, new String[] { RosterConstants.ALIAS },
+					RosterConstants.JID + " = ?", new String[] { jid }, null);
+			String result = jid;
+			if (c.moveToFirst())
+				result = c.getString(0);
+			c.close();
+			return result;
 		} else {
 			return jid;
 		}			
