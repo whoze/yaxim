@@ -77,9 +77,10 @@ public abstract class GenericService extends Service {
 	}
 
 	protected void notifyClient(String[] jid, String fromUserName, String message,
-			boolean showNotification, boolean silent_notification, boolean is_error, Message.Type msgType) {
+			boolean showNotification, boolean silent_notification, Message.Type msgType) {
 		String fromJid = jid[0];
 		boolean isMuc = (msgType==Message.Type.groupchat);
+		boolean is_error = (msgType==Message.Type.error);
 		boolean beNoisy=true;
 		
 		if (!showNotification && beNoisy) {

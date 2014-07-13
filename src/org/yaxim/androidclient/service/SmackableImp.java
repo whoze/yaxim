@@ -1130,7 +1130,7 @@ public class SmackableImp implements Smackable {
 					// display error inline
 					if (msg.getType() == Message.Type.error) {
 						if (changeMessageDeliveryStatus(msg.getPacketID(), ChatConstants.DS_FAILED))
-							mServiceCallBack.messageError(fromJID, msg.getError().toString(), (cc != null));
+							mServiceCallBack.notifyMessage(fromJID, msg.getError().toString(), (cc != null), Message.Type.error);
 						return; // we do not want to add errors as "incoming messages"
 					}
 
@@ -1164,7 +1164,7 @@ public class SmackableImp implements Smackable {
 						Log.d(TAG, "actually adding msg...");
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
 						if (direction == ChatConstants.INCOMING)
-							mServiceCallBack.newMessage(fromJID, chatMessage, (cc != null), msg.getType());
+							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
 						}
 					}
 				} catch (Exception e) {

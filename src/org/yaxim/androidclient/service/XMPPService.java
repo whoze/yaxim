@@ -502,18 +502,14 @@ public class XMPPService extends GenericService {
 		}
 
 		mSmackable.registerCallback(new XMPPServiceCallback() {
-			public void newMessage(String[] from, String message, boolean silent_notification, Type msgType) {
+			public void notifyMessage(final String[] from, final String message,
+					final boolean silent_notification, final Type msgType) {
 				logInfo("notification: " + from +" with type: "+msgType.name());
-				notifyClient(from, mSmackable.getNameForJID(from[0]), message, !mIsBoundTo.contains(from[0]), false, silent_notification, msgType);
-			}
-
-			public void messageError(final String[] from, final String error, final boolean silent_notification) {
-				logInfo("error notification: " + from);
 				mMainHandler.post(new Runnable() {
 					public void run() {
 						// work around Toast fallback for errors
-						notifyClient(from, mSmackable.getNameForJID(from[0]), error,
-							!mIsBoundTo.contains(from[0]), silent_notification, true, Type.error);
+						notifyClient(from, mSmackable.getNameForJID(from[0]), message,
+							!mIsBoundTo.contains(from[0]), silent_notification, msgType);
 					}});
 				}
 
