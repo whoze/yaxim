@@ -1173,7 +1173,10 @@ public class SmackableImp implements Smackable {
 						) {
 						Log.d(TAG, "actually adding msg...");
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
-						if (direction == ChatConstants.INCOMING)
+						// prevent if highlighting is enabled and message does not match
+						boolean prevent_notify = msg.getType() == Message.Type.groupchat && mConfig.highlightNickMuc &&
+								!chatMessage.toLowerCase().contains(multiUserChats.get(fromJID[0]).getNickname().toLowerCase());
+						if (direction == ChatConstants.INCOMING && !prevent_notify)
 							mServiceCallBack.notifyMessage(fromJID, chatMessage, (cc != null), msg.getType());
 						}
 					}
