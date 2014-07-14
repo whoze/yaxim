@@ -1362,7 +1362,7 @@ public class SmackableImp implements Smackable {
 		return mLastError;
     }
 
-	public void syncDbRooms() {
+	public synchronized void syncDbRooms() {
 		if (!isAuthenticated()) {
 			debugLog("syncDbRooms: aborting, not yet authenticated");
 		}
