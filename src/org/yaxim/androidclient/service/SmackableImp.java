@@ -1169,7 +1169,7 @@ public class SmackableImp implements Smackable {
 							);
 					if(msg.getType() != Message.Type.groupchat
 						|| 
-						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, msg.getPacketID(), fromJID))
+						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, msg.getPacketID(), fromJID, ts))
 						) {
 						Log.d(TAG, "actually adding msg...");
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
@@ -1192,7 +1192,7 @@ public class SmackableImp implements Smackable {
 	}
 
 
-	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid ) {
+	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, long ts) {
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.MESSAGE,
 				ChatConstants.JID, ChatConstants.RESOURCE,
@@ -1203,9 +1203,9 @@ public class SmackableImp implements Smackable {
 		//		+" AND "+ChatConstants.DATE+"='"+ts+"'";
 		//final String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		//final String selection = "("+content_match+") OR ("+packet_match+")";
-		final String selection = ChatConstants.JID+" = ? AND " + ChatConstants.RESOURCE + " = ? AND " +
-					 ChatConstants.PACKET_ID + " = ?";
-		final String[] selectionArgs = new String[] { fromJid[0], fromJid[1], packet_id };
+		final String selection = ChatConstants.JID+" = ? AND " + ChatConstants.RESOURCE + " = ? AND (" +
+					 ChatConstants.PACKET_ID + " = ? OR " + ChatConstants.DATE + " = ?)";
+		final String[] selectionArgs = new String[] { fromJid[0], fromJid[1], packet_id, ""+ts };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
 			boolean result = (cursor.getCount() == 0);
