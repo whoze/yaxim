@@ -68,6 +68,7 @@ import org.jivesoftware.smackx.provider.MUCUserProvider;
 import org.jivesoftware.smackx.packet.DelayInformation;
 import org.jivesoftware.smackx.packet.DelayInfo;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
+import org.jivesoftware.smackx.packet.MUCUser;
 import org.jivesoftware.smackx.packet.Version;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.ping.packet.*;
@@ -1231,6 +1232,22 @@ public class SmackableImp implements Smackable {
 						handleIncomingSubscribe(p);
 						break;
 					case unsubscribe:
+						break;
+					case unavailable:
+						// HACK: better use UserStatusListener
+						MUCUser u = (MUCUser)p.getExtension("http://jabber.org/protocol/muc#user");
+						String jid[] = p.getFrom().split("/");
+						Log.d(TAG, "received presence unavailable: " + u + " jid=" + p.getFrom());
+						MultiUserChat muc = multiUserChats.get(jid[0]);
+						Log.d(TAG, (muc != null)?muc.getNickname() : "null");
+						if (u != null && muc != null && muc.getNickname().equals(jid[1])) {
+							// we were kicked! ouch!
+							multiUserChats.remove(jid[0]);
+							ContentValues cvR = new ContentValues();
+							cvR.put(RosterProvider.RosterConstants.STATUS_MESSAGE, "Kicked: " + u.getItem().getReason());
+							cvR.put(RosterProvider.RosterConstants.STATUS_MODE, StatusMode.offline.ordinal());
+							upsertRoster(cvR, jid[0]);
+						}
 						break;
 					}
 				} catch (Exception e) {
