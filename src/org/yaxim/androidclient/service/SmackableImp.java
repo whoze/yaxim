@@ -567,6 +567,12 @@ public class SmackableImp implements Smackable {
 				mXMPPConnection.removeConnectionListener(mConnectionListener);
 			mConnectionListener = new ConnectionListener() {
 				public void connectionClosedOnError(Exception e) {
+					// XXX: this is the only callback we get from errors, so
+					// we need to check for non-resumability and work around
+					// here:
+					if (!mStreamHandler.isResumePossible()) {
+						multiUserChats.clear();
+					}
 					onDisconnected(e);
 				}
 				public void connectionClosed() {
