@@ -1201,6 +1201,11 @@ public class SmackableImp implements Smackable {
 
 
 	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, long ts) {
+		// work around sync issue: once we are joined, no messages will be filtered
+		MultiUserChat muc = multiUserChats.get(fromJid[0]);
+		if (muc != null && muc.isJoined())
+			return true;
+
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.MESSAGE,
 				ChatConstants.JID, ChatConstants.RESOURCE,
@@ -1211,9 +1216,8 @@ public class SmackableImp implements Smackable {
 		//		+" AND "+ChatConstants.DATE+"='"+ts+"'";
 		//final String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		//final String selection = "("+content_match+") OR ("+packet_match+")";
-		final String selection = ChatConstants.JID+" = ? AND " + ChatConstants.RESOURCE + " = ? AND (" +
-					 ChatConstants.PACKET_ID + " = ? OR " + ChatConstants.DATE + " = ?)";
-		final String[] selectionArgs = new String[] { fromJid[0], fromJid[1], packet_id, ""+ts };
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) FROM (SELECT * FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50";
+		final String[] selectionArgs = new String[] { fromJid[1], packet_id, ""+ts, msg.getBody(), fromJid[0] };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
 			boolean result = (cursor.getCount() == 0);
