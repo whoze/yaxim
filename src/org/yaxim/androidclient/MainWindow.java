@@ -54,8 +54,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -112,8 +110,6 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	private ActionBar actionBar;
 	private String mTheme;
-	
-	private FragmentActivity fa = new FragmentActivity();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
