@@ -6,6 +6,7 @@ import java.util.zip.Checksum;
 
 import org.yaxim.androidclient.R;
 import org.yaxim.androidclient.YaximApplication;
+import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.service.IXMPPMucService;
 import org.yaxim.androidclient.service.ParcelablePresence;
 import org.yaxim.androidclient.service.XMPPService;
@@ -17,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.DialogInterface.OnClickListener;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -43,6 +46,14 @@ public class MUCChatWindow extends ChatWindow {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// fill in nickname on tap
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				Cursor c = (Cursor)parent.getItemAtPosition(position);
+				addNicknameToInput(c.getString(c.getColumnIndex(ChatConstants.RESOURCE)));
+			}});
 	}
 
 	@Override
@@ -106,6 +117,11 @@ public class MUCChatWindow extends ChatWindow {
 		}
 	}
 	
+	private void addNicknameToInput(String nickname) {
+		int cursor_position = mChatInput.getSelectionStart();
+		String postfix = (cursor_position == 0) ? ", " : " ";
+		mChatInput.getText().insert(cursor_position, nickname + postfix);
+	}
 
 	private void showUserList() {
 		final List<ParcelablePresence> users = mMucServiceAdapter.getUserList();
@@ -121,8 +137,7 @@ public class MUCChatWindow extends ChatWindow {
 		dialogBuilder.setAdapter(adapter, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				String postfix=mChatInput.getSelectionStart()==0 ? ", " : ""; 
-				mChatInput.getText().insert(mChatInput.getSelectionStart(), users.get(which).resource+postfix);
+				addNicknameToInput(users.get(which).resource);
 			}
 		});
 		AlertDialog dialog = dialogBuilder.create();
@@ -197,5 +212,5 @@ public class MUCChatWindow extends ChatWindow {
 			
 			return convertView;
 		}
-}
+	}
 }
