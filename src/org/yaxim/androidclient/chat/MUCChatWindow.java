@@ -128,7 +128,7 @@ public class MUCChatWindow extends ChatWindow {
 		if (users == null)
 			return;
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MUCChatWindow.this)
-		.setTitle("Users in room "+mWithJabberID)
+		.setTitle(getString(R.string.chat_muc_userlist, mWithJabberID))
 		.setNegativeButton(android.R.string.cancel, null);
 
 		PresenceArrayAdapter adapter = new PresenceArrayAdapter(MUCChatWindow.this, users);

@@ -305,7 +305,7 @@
     <string name="muc_room_jid">Rooms JID: </string>
     <string name="muc_invite_ok_button">Join Room!</string>
     <string name="muc_invite_reject">Reject Invitation!</string>
-    <string name="chat_muc_userlist">Users</string>
+    <string name="chat_muc_userlist">Chat Room Participants (%s)</string>
     
 
 </resources>
