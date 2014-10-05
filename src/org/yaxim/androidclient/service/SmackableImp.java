@@ -1177,7 +1177,7 @@ public class SmackableImp implements Smackable {
 							);
 					if(msg.getType() != Message.Type.groupchat
 						|| 
-						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, msg.getPacketID(), fromJID, ts))
+						(msg.getType()==Message.Type.groupchat && checkAddMucMessage(msg, msg.getPacketID(), fromJID, timestamp))
 						) {
 						Log.d(TAG, "actually adding msg...");
 						addChatMessageToDB(direction, fromJID, chatMessage, is_new, ts, msg.getPacketID());
@@ -1200,11 +1200,12 @@ public class SmackableImp implements Smackable {
 	}
 
 
-	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, long ts) {
-		// work around sync issue: once we are joined, no messages will be filtered
-		MultiUserChat muc = multiUserChats.get(fromJid[0]);
-		if (muc != null && muc.isJoined())
+	private boolean checkAddMucMessage(Message msg, String packet_id, String[] fromJid, DelayInfo timestamp) {
+		if (timestamp == null) {
+			Log.d(TAG, "MUC is joined already, adding msg");
 			return true;
+		}
+		long ts = timestamp.getStamp().getTime();
 
 		final String[] projection = new String[] {
 				ChatConstants._ID, ChatConstants.MESSAGE,
@@ -1216,15 +1217,18 @@ public class SmackableImp implements Smackable {
 		//		+" AND "+ChatConstants.DATE+"='"+ts+"'";
 		//final String packet_match = ChatConstants.PACKET_ID+"='"+msg.getPacketID()+"'";
 		//final String selection = "("+content_match+") OR ("+packet_match+")";
-		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) FROM (SELECT * FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50";
+		if (packet_id == null) packet_id = "";
+		final String selection = "resource = ? AND (pid = ? OR date = ? OR message = ?) AND _id >= (SELECT MIN(_id) FROM chats WHERE jid = ? ORDER BY _id DESC LIMIT 50)";
 		final String[] selectionArgs = new String[] { fromJid[1], packet_id, ""+ts, msg.getBody(), fromJid[0] };
 		try {
 			Cursor cursor = mContentResolver.query(ChatProvider.CONTENT_URI, projection, selection, selectionArgs, null);
+			Log.d(TAG, "message from " + fromJid[1] + " matched " + cursor.getCount() + " items.");
 			boolean result = (cursor.getCount() == 0);
 			cursor.close();
 			return result;
-		} catch (Exception e) {} // just return true...
+		} catch (Exception e) { e.printStackTrace(); } // just return true...
 
+		Log.d(TAG, "falling back to meh");
 		return true;	
 	}
 
