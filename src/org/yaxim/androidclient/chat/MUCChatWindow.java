@@ -101,7 +101,7 @@ public class MUCChatWindow extends ChatWindow {
 	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
 		Log.d(TAG, "creating options menu, we're a muc");
 		MenuInflater inflater = getSupportMenuInflater(); 
-		inflater.inflate(R.menu.chat_options, menu);
+		inflater.inflate(R.menu.muc_options, menu);
 		return true;
 	}
 	
