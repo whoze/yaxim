@@ -297,7 +297,6 @@
 	<string name="muc_add">Add Room</string>
 	<string name="muc_remove">Remove Room</string>
     <string name="title_activity_muc_invite">Invitation to Muc</string>
-    <string name="title_activity_muc_invite">Invitation to Muc</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="muc_invite_string">A New Invitation to a MUC has been received!</string>
