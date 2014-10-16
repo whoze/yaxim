@@ -1404,6 +1404,16 @@ public class SmackableImp implements Smackable {
 			if(!joinedRooms.contains(jid)) {
 				debugLog("room " + jid + " isn't joined yet, i wanna join...");
 				joinRoom(jid, nickname, password); // TODO: make historyLen configurable
+			} else {
+				MultiUserChat muc = multiUserChats.get(jid);
+				debugLog("room " + jid + ": changing nickname to " + nickname);
+				if (muc.getNickname() != nickname) {
+					try {
+						muc.changeNickname(nickname);
+					} catch (XMPPException e) {
+						// TODO: toast
+					}
+				}
 			}
 			//debugLog("found data in contentprovider: "+jid+" "+password+" "+nickname);
 		}
