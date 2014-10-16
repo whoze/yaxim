@@ -1262,6 +1262,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
+					unbindService(this);
 				}
 				public void onServiceDisconnected(ComponentName name) {}
 			};
@@ -1306,6 +1307,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
+					unbindService(this);
 				}
 				public void onServiceDisconnected(ComponentName name) {}
 			};
@@ -1381,6 +1383,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
+					unbindService(this);
 				}
 				public void onServiceDisconnected(ComponentName name) {}
 			};
