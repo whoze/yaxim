@@ -15,6 +15,7 @@ import org.yaxim.androidclient.data.RosterProvider.RosterConstants;
 import org.yaxim.androidclient.data.YaximConfiguration;
 import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
+import org.yaxim.androidclient.dialogs.EditMUCDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
 import org.yaxim.androidclient.preferences.AccountPrefs;
@@ -535,6 +536,9 @@ public class MainWindow extends SherlockExpandableListActivity {
 			case R.id.roster_contextmenu_contact_invite:
 				if (!isConnected()) { showToastNotification(R.string.Global_authenticate_first); return true; }
 				mucInviteDialog(userJid, userName);
+				return true;
+			case R.id.roster_contextmenu_muc_edit:
+				new EditMUCDialog(this, serviceAdapter, userJid).show();
 				return true;
 			}
 		} else {
