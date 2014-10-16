@@ -328,6 +328,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		}
 
 		// display contact menu for contacts
+		menu.setGroupVisible(R.id.roster_contextmenu_item_menu, isChild);
 		menu.setGroupVisible(R.id.roster_contextmenu_contact_menu, isChild && !isMuc);
 		// display group menu for non-standard groups
 		menu.setGroupVisible(R.id.roster_contextmenu_group_menu, !isChild &&
